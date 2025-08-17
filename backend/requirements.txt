@@ -11,4 +11,5 @@ requests
 faiss-cpu
 opencv-python-headless
 scikit-learn
-
+python-dotenv
+vosk

@@ -6,3 +6,4 @@ faiss_index.bin
 input_video.mp4
 metadata.pkl
 .env
+data

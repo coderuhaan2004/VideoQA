@@ -4,6 +4,9 @@ from app.services.llava_api import query_llava, process_query
 from app.core.memory import ChatMemory
 from app.services.extract_frames import extract_frames
 from app.services.faiss import faiss_process
+from app.services.extract_audio import AudioExtractor
+from app.services.transcription import get_vosk_model
+from app.services.transcribe import Transcriber
 
 router = APIRouter()
 memory = ChatMemory()
@@ -28,8 +31,17 @@ async def clip_embed_video(file: UploadFile = File(...)):
         frames = extract_frames(temp_path, "video_frames")
         (preprocess, model) = clip_model()
 
-        faiss_process(preprocess, model, frames)
-        
+        extractor = AudioExtractor()
+        audio_path = extractor.extract_audio(temp_path)
+
+        #transcriptions handle
+        model_path = get_vosk_model()
+        transciber = Transcriber(model_path)
+        print("Using model:", model_path)
+        transcriptions = transciber.transcribe(audio_path)["transcription"]
+
+        print("Creating index.bin and metadata.pkl")
+        faiss_process(preprocess, model, frames, transcriptions)
 
         return {"ready": True}
     except Exception as e:

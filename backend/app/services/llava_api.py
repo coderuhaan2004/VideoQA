@@ -8,14 +8,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import base64
 from dotenv import load_dotenv
 
-
-
 load_dotenv()
 
 url = os.getenv("URL")
 api_key = os.getenv("API_KEY")
-
-
 
 # Use this function to convert an image file from the filesystem to base64
 def image_file_to_base64(image_path):
@@ -28,7 +24,7 @@ def query_llava(context: dict, question: str) -> str:
     try:
         data = {
         "images": image_file_to_base64(context["frame_path"]),
-        "prompt": question
+        "prompt": f"Question:{question}, Transcription for the frame: {context['transcription']}"
         }
 
         headers = {'x-api-key': api_key}
