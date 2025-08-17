@@ -15,6 +15,8 @@
 
 ---
 
+![Workflow](./readme_images/workflow.png)
+
 ## Tech Stack
 
 ### Backend (FastAPI)
